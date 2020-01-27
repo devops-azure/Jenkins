@@ -1,0 +1,27 @@
+Create a Jenkins pipeline for the same to perform the below steps :
+
+Checkout the given maven-spring-boot java based project from github
+Build it using maven to generate the desired artifacts
+Write a dockerfile to run the generated artifact in a containerized environment
+Build the Dockerfile to create an image
+Write the deployment manifests for creating a deployment, service and ingress for the same docker image to run on kubernetes
+Make the deployment to be scalable automatically based on certain cpu utilization criteria
+Take the application.properties from the project and create configmaps from it
+Delete the properties files from the source code and build the image
+Edit the application deployment in kubernetes to read the properties from the configmap
+
+Git Repo to use : 
+
+https://github.com/in28minutes/spring-boot-examples/tree/master/spring-boot-web-application
+
+Maven Path : /opt/maven/bin/mvn
+
+Jenkins URL : http://35.227.42.218/jenkins/
+User : test
+Password : test123
+
+
+
+
+
+

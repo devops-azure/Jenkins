@@ -1,0 +1,87 @@
+
+Install jenkins
+
+Get admin password from /var/jenkins_home/secrets/initialAdminPassword
+
+
+create first account:
+
+echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount("jenkins", "jenkins")' | java -jar jenkins-cli.jar -auth admin:2c047d5649d14ed89e81cde3d0934d31 -s http://52.67.164.210:8080/ groovy =
+
+
+
+create job:
+java -jar jenkins-cli.jar -s http://52.67.164.210:8080/ create-job job1 --username jenkins --password jenkins < config.xml
+
+
+list jobs:
+java -jar jenkins-cli.jar -s http://52.67.164.210:8080/ list-jobs
+
+
+build a job:
+java -jar jenkins-cli.jar -s http://52.67.164.210:8080/ build job1 --username jenkins --password jenkins
+
+
+list plugins:
+java -jar jenkins-cli.jar -s http://52.67.164.210:8080/ list-plugins
+
+
+
+*if there are any errors, enable manage jenkins -> config global securty -> Authorization -> Allow anonymous read access
+
+
+#!/bin/bash
+
+
+build_jenkins()
+{
+	server_ip=http://52.67.59.240:8080
+	job_name=build-java
+	
+	echo "<============Creating jenkins user===========================>"
+
+	echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount("$2", "$3")' | java -jar jenkins-cli.jar -auth admin:$1 -s $server_ip groovy =
+
+	echo "<============Creating the job with name: build-java=============>"
+
+	java -jar jenkins-cli.jar -s $server_ip create-job $job_name --username $2 --password $3 < config.xml
+
+
+	echo "<============Trigger a build in build-java==================>"
+
+	java -jar jenkins-cli.jar -s $server_ip build $job_name --username $2 --password $3
+
+build_image
+}
+
+build_image()
+{
+	echo "Build is success... received artifact"
+
+	echo "create Dockerfile and Docker image"
+
+	touch Dockerfile
+
+	echo "FROM tomcat:8.0
+              USER root
+	      COPY *.war /usr/local/tomcat/webapps" > Dockerfile
+
+
+	docker build -t java-hello-world .
+
+	docker images
+
+	container_ip=$(docker run -d -p 8080:8080 java-hello-world)
+
+	echo "Application is deployed, you can access it at http://52.67.136.31:8080/hello-world-war-1.0.0/"
+	
+	
+}
+admin_password=$1
+username=jenkins
+password=jenkins
+
+build_jenkins $admin_password $username $password
+
+
+

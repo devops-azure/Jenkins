@@ -1,0 +1,72 @@
+Direct installation through setof commands, follow this link:
+https://wiki.jenkins.io/display/JENKINS/Installing+Jenkins
+
+
+After installation check the filesystem of jenkins in: /var/lib/jenkins_home/
+It will contain all the data like jobs, workspace, plugins, users etc.
+All jenkins functionalities can be done through CLI or jenkins UI.
+
+Try accessing jenkins WebUI using: http://localhost:8080 
+
+>Add jenkins to GitHub webhook for auto trigger on commits:
+Open GitHub project->settings-> webhooks
+Add the Payload URL: Enter the URL of your Jenkins instance followed by /github-webhook/
+Add and Save the webhook and in Jenkins jobs enable GitHub Hook trigger in Build Trigger section. That's it!!
+
+Ref:
+https://medium.com/@marc_best/trigger-a-jenkins-build-from-a-github-push-b922468ef1ae
+https://learning-continuous-deployment.github.io/jenkins/github/2015/04/17/github-jenkins/
+
+Useful:
+https://www.docker.com/use-cases/cicd
+Look at first 2 videos to configure the jenkins with github hooks so that jenkins starts the job automatically
+when a change is pushed to github repo without monitoring the github.
+
+
+-----------------------------------------------------
+extra:
+
+jenkins in container with plugins:
+
+
+If you commit the jenkins container which has all plugins it is not holding the plugins folder in /var/jenkins_home in created image
+
+it is problem with jenkins_home directory, its jenkins design.
+
+all files are copied to the image only jenkins_home files are missing....
+
+So making custom jenkins image including the plugins is not possible.
+
+
+So other option is use plugins in volume during docker run or in dockerfile.
+
+using volume will copy the plugins to jenkins container whenever required and also make the new backup with newly created plugins and jobs to the host as it is mounted
+
+
+
+docker run -d -v /home/docker/volume/:/var/jenkins_home/ -p 8080:8080 jenkins
+
+volume folder has plugin folder in it.
+volume folder used for backup of jenkins container volume (/var/jenkins_home)
+
+
+Remember:
+volumed data inside container will not be copied into commited image
+only actual container data copies into image
+
+---
+Obviously, anyone interested in learning about continuous delivery could learn a lot from Netflix.
+
+With code being deployed thousands of times per day, DevOps is Netflix’s best option. It’s a high-speed approach for a high-speed service in a high-speed industry.
+
+Netflix believes that “any process requiring people to execute manual steps repetitively will get you into trouble on a long enough timeline." Thus, anything that can be automated, should.
+
+Additionally, they say that "we cannot support, understand and improve what we can't see." In order to support, understand and improve its deployment, Netflix needs to be able to trace code as it flows through the SCM and quality gates. "Tools that surface feedback about the state of our pipeline and running apps give us the confidence to move fast and help us quickly identify and fix issues when things (inevitably) break."
+
+This presents the approach of netflix to software delivery and some of the techniques they’ve developed in getting features into production faster while minimizing risk to quality of service.
+
+
+
+
+
+

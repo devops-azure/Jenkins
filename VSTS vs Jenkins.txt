@@ -1,0 +1,9 @@
+
+
+Azure Pipelines offers free CI/CD with unlimited minutes and 10 parallel jobs for every open source project.
+
+Many of the top open source projects are already using Azure Pipelines for CI/CD, including Atom, Cpython, Pipenv, Tox, Visual Studio Code, and TypeScript.
+
+
+As for pricing, Azure DevOps is free for open source projects and small projects (up to five users). 
+For larger teams, the cost ranges from $30 per month (10 users) to $6,150 per month (1,000 users).
